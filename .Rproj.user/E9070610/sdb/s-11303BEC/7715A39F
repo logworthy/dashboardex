@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(data.table)\nlibrary(ggplot2)\n\n# Get Iris data & transform to a long format\ndata(iris)\ndt <- data.table(iris)\ndt[, id := ((seq_len(nrow(dt))-1) %% 50)+1]\nmetrics_long <- melt(dt, id.vars = c('id', 'Species'), value.name = 'Value', variable.name='Metric')\n\n# key indicator relationships\nreln1 <- expand.grid(Parent_Metric='Sepal.Length', Metric=c('Sepal.Length', 'Sepal.Width', 'Petal.Length'))\nreln2 <- expand.grid(Parent_Metric='Sepal.Width', Metric=c('Sepal.Length', 'Sepal.Width', 'Petal.Width'))\nreln3 <- expand.grid(Parent_Metric='Petal.Width', Metric=c('Petal.Length', 'Sepal.Width', 'Petal.Width'))\nreln4 <- expand.grid(Parent_Metric='Petal.Length', Metric=c('Petal.Length', 'Sepal.Length', 'Petal.Width'))\n\ndriver_reln_all <- rbindlist(list(reln1,reln2,reln3,reln4))\n\n# graph relationships\nreln1 <- expand.grid(Parent_Metric='Sepal.Length', Metric=c('Sepal.Length', 'Petal.Length'))\nreln2 <- expand.grid(Parent_Metric='Sepal.Width', Metric=c('Sepal.Width', 'Petal.Width'))\nreln3 <- expand.grid(Parent_Metric='Petal.Width', Metric=c('Sepal.Width', 'Petal.Width'))\nreln4 <- expand.grid(Parent_Metric='Petal.Length', Metric=c('Petal.Length', 'Sepal.Length'))\n\ngraph_reln_all <- rbindlist(list(reln1,reln2,reln3,reln4))\ngraph_reln_all[, display_name := stringr::str_extract(Metric, '^\\\\w+')]\n\n# metric graph names\nmetrics_dim <- data.table(Metric=unique(metrics_long$Metric))\nmetrics_dim[, Graph_Name := stringr::str_extract(Metric, '\\\\w+$')]\n\n# ID Mapping of in-scope periods\nid_mapping <- data.table(id=unique(metrics_long$id))\nid_mapping[, `Last 12 Months` := (id > 50-12 & id <= 50)]\nid_mapping[, `All` := T]\nid_mapping[, clicked := F]\n\n# testing highlights\n# metrics_long[id==best_fit$id & Value==best_fit$Value, clicked := T]\n\n# Testing plotting\n# ggplot(metrics_long[Species=='setosa' & Metric=='Petal.Width'], aes(x=id, y=Value))+geom_line()+\n# geom_point(data=metrics_long[clicked==T], color='red')",
+    "created" : 1496207756353.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1555724232",
+    "id" : "7715A39F",
+    "lastKnownWriteTime" : 1496280488,
+    "last_content_update" : 1496280488975,
+    "path" : "~/Dev/DashboardEx/global.R",
+    "project_path" : "global.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

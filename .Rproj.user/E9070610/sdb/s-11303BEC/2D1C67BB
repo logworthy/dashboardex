@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\nlibrary(plotly)\n\nshinyUI(fluidPage(\n\n  # header & product selectors\n  fluidRow(\n    column(8, h1(\"The Dashboard Title\")),\n    column(4,\n        selectInput(\"Species\",\n                   \"Species to show:\",\n                   choices=unique(as.character(metrics_long$Species))\n        ),\n        selectInput(\"Period\",\n                    \"Period\",\n                    choices=setdiff(colnames(id_mapping), c('clicked', 'id')))\n      )\n  ),\n\n  # metric choice & plot\n  fluidRow(\n    column(4,\n      \n      selectInput(\"Metric\",\n                  \"Metric to show:\",\n                  choices=unique(as.character(metrics_long$Metric))\n                  )\n\n    ),\n\n    # Show a plot of the generated distribution\n    column(8,\n      plotlyOutput(\"MetricPlot\", click=\"plot_click\")\n    )\n  ),\n  \n  # table and metric graphs\n  fluidRow(\n    column(7,\n      tableOutput('IndicatorTable')\n    ),\n    column(5,\n      plotOutput('BreakdownPlot')\n    )\n  )\n  \n))\n",
+    "created" : 1496206974071.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2239664486",
+    "id" : "2D1C67BB",
+    "lastKnownWriteTime" : 1496283125,
+    "last_content_update" : 1496283125327,
+    "path" : "~/Dev/DashboardEx/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
